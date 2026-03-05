@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard - Smart Digital Locker</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="dashboard-container">
+      <!-- Sidebar Navigation -->
+      <aside class="sidebar">
+        <div class="sidebar-header">
+          <span class="logo-icon">🔒</span>
+          <span class="logo-text">Digital Locker</span>
+        </div>
+
+        <nav class="sidebar-nav">
+          <a href="#" class="nav-item active" data-page="overview">
+            <span class="nav-icon">📊</span>
+            <span>Overview</span>
+          </a>
+          <a href="#" class="nav-item" data-page="documents">
+            <span class="nav-icon">📄</span>
+            <span>Documents</span>
+          </a>
+          <a href="#" class="nav-item" data-page="upload">
+            <span class="nav-icon">⬆️</span>
+            <span>Upload</span>
+          </a>
+          <a href="#" class="nav-item" data-page="history">
+            <span class="nav-icon">📜</span>
+            <span>Download History</span>
+          </a>
+        </nav>
+
+        <div class="sidebar-footer">
+          <button id="logoutBtn" class="btn btn-logout">
+            <span class="nav-icon">🚪</span>
+            <span>Logout</span>
+          </button>
+        </div>
+      </aside>
+
+      <!-- Main Content -->
+      <main class="dashboard-content">
+        <!-- Header -->
+        <header class="dashboard-header">
+          <div class="header-left">
+            <h1 id="pageTitle">Overview</h1>
+          </div>
+          <div class="header-right">
+            <div class="user-info">
+              <span id="userName">User</span>
+              <span class="user-avatar">👤</span>
+            </div>
+          </div>
+        </header>
+
+        <!-- Pages Container -->
+        <div class="pages-container">
+          <!-- Overview Page -->
+          <div id="overview" class="page active">
+            <div class="stats-grid">
+              <div class="stat-card">
+                <div class="stat-icon">📄</div>
+                <div class="stat-content">
+                  <h3>Total Files</h3>
+                  <p class="stat-value" id="fileCount">0</p>
+                </div>
+              </div>
+
+              <div class="stat-card">
+                <div class="stat-icon">💾</div>
+                <div class="stat-content">
+                  <h3>Storage Used</h3>
+                  <p class="stat-value" id="storageUsed">0 MB</p>
+                  <p class="stat-subtitle" id="storageLimit">of 1 GB</p>
+                </div>
+              </div>
+
+              <div class="stat-card">
+                <div class="stat-icon">📥</div>
+                <div class="stat-content">
+                  <h3>Total Downloads</h3>
+                  <p class="stat-value" id="downloadCount">0</p>
+                </div>
+              </div>
+
+              <div class="stat-card">
+                <div class="stat-icon">🔐</div>
+                <div class="stat-content">
+                  <h3>Encryption</h3>
+                  <p class="stat-value">AES-256</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="storage-section">
+              <h2>Storage Usage</h2>
+              <div class="storage-bar">
+                <div class="storage-used" id="storageBar"></div>
+              </div>
+              <p class="storage-info" id="storageInfo">0 MB used out of 1 GB</p>
+            </div>
+
+            <div class="quick-actions">
+              <h2>Quick Actions</h2>
+              <div class="actions-grid">
+                <button class="action-btn" onclick="switchPage('upload')">
+                  <span class="action-icon">⬆️</span>
+                  <span>Upload Document</span>
+                </button>
+                <button class="action-btn" onclick="switchPage('documents')">
+                  <span class="action-icon">📄</span>
+                  <span>View Documents</span>
+                </button>
+                <button class="action-btn" onclick="switchPage('history')">
+                  <span class="action-icon">📜</span>
+                  <span>Download History</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Upload Page -->
+          <div id="upload" class="page">
+            <div class="page-header">
+              <h2>Upload Document</h2>
+              <p>Upload and securely encrypt your documents</p>
+            </div>
+
+            <div class="upload-section">
+              <div class="upload-box" id="uploadBox">
+                <span class="upload-icon">📁</span>
+                <h3>Drag and drop your file here</h3>
+                <p>or click to browse</p>
+                <p class="upload-info">
+                  <strong>📄 Documents:</strong> PDF, DOCX, DOC, XLSX, XLS,
+                  PPTX, PPT, TXT, ODT, ODS, ODP<br />
+                  <strong>🖼️ Images:</strong> JPG, JPEG, PNG, GIF, BMP, SVG,
+                  WEBP, TIFF, ICO<br />
+                  <strong>🎬 Video:</strong> MP4, WEBM, AVI, MOV, MKV, FLV,
+                  WMV<br />
+                  <strong>🎵 Audio:</strong> MP3, WAV, OGG, AAC, FLAC, M4A,
+                  WMA<br />
+                  <strong>📦 Archives:</strong> ZIP, RAR, 7Z, TAR, GZ<br />
+                  <strong>💻 Code/Data:</strong> JS, PY, CSS, HTML, XML, JSON,
+                  CSV, SQL, SH<br />
+                  <strong
+                    >Max file size: 100 MB | Max total storage: 1 GB</strong
+                  >
+                </p>
+                <input type="file" id="fileInput" style="display: none" />
+              </div>
+
+              <div
+                id="uploadProgress"
+                class="upload-progress"
+                style="display: none"
+              >
+                <div class="progress-bar">
+                  <div class="progress-fill" id="progressFill"></div>
+                </div>
+                <p id="uploadStatus">Uploading...</p>
+              </div>
+
+              <div id="uploadMessage" class="upload-message"></div>
+            </div>
+          </div>
+
+          <!-- Documents Page -->
+          <div id="documents" class="page">
+            <div class="page-header">
+              <h2>My Documents</h2>
+              <p>All your uploaded documents</p>
+            </div>
+
+            <div id="documentsList" class="documents-grid">
+              <p class="empty-state">No documents uploaded yet</p>
+            </div>
+          </div>
+
+          <!-- Download History Page -->
+          <div id="history" class="page">
+            <div class="page-header">
+              <h2>Download History</h2>
+              <p>Track your document downloads</p>
+            </div>
+
+            <div id="historyList" class="history-list">
+              <p class="empty-state">No downloads yet</p>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>

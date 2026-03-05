@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login - Smart Digital Locker</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="auth-container">
+      <div class="auth-form">
+        <div class="auth-header">
+          <span class="logo-icon">🔒</span>
+          <h1>Login</h1>
+          <p>Access your secure locker</p>
+        </div>
+
+        <form id="loginForm">
+          <div class="form-group">
+            <label for="email">Email Address</label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              required
+              placeholder="your@email.com"
+            />
+          </div>
+
+          <div class="form-group password-group">
+            <label for="password">Password</label>
+            <input
+              type="password"
+              id="password"
+              name="password"
+              required
+              placeholder="••••••••"
+            />
+            <button
+              type="button"
+              class="password-toggle"
+              onclick="togglePassword('password')"
+            >
+              👁️
+            </button>
+          </div>
+
+          <button type="submit" class="btn btn-primary btn-full">Login</button>
+        </form>
+
+        <div class="auth-message" id="message"></div>
+
+        <div class="auth-footer">
+          <p>Don't have an account? <a href="/register">Register here</a></p>
+          <a href="/">Back to Home</a>
+        </div>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+      document
+        .getElementById("loginForm")
+        .addEventListener("submit", async (e) => {
+          e.preventDefault();
+
+          const email = document.getElementById("email").value;
+          const password = document.getElementById("password").value;
+          const messageEl = document.getElementById("message");
+
+          try {
+            const response = await fetch("/api/auth/login", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({ email, password }),
+            });
+
+            const data = await response.json();
+
+            if (data.success) {
+              localStorage.setItem("token", data.token);
+              messageEl.textContent = "Login successful! Redirecting...";
+              messageEl.className = "auth-message success";
+              setTimeout(() => {
+                window.location.href = "/dashboard";
+              }, 1500);
+            } else {
+              messageEl.textContent = data.message || "Login failed";
+              messageEl.className = "auth-message error";
+            }
+          } catch (error) {
+            console.error("Login error:", error);
+            messageEl.textContent = "An error occurred. Please try again.";
+            messageEl.className = "auth-message error";
+          }
+        });
+    </script>
+  </body>
+</html>
